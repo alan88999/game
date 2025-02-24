@@ -50,6 +50,8 @@ declare namespace API {
     updatedAt?: string;
     createdAt?: string;
     progress?: number;
+    username?: string;
+    id: number;
   };
 
   type RuleList = {

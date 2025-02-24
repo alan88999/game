@@ -124,6 +124,22 @@ export async function transfer(
   });
 }
 
+/** 修改密码 POST /bo/api/v1/user/modify/password */
+export async function changePassword(body: { password: string; user_id: number }) {
+  return request<API.RuleList>('/bo/api/v1/user/modify/password', {
+    method: 'POST',
+    data: body,
+  });
+}
+
+/** 修改状态 POST /bo/api/v1/user/modify/status */
+export async function changeStatus(body: { status: number; user_id: number }) {
+  return request<API.RuleList>('/bo/api/v1/user/modify/status', {
+    method: 'POST',
+    data: body,
+  });
+}
+
 /** 获取points记录 POST /bo/api/v1/transaction/list */
 export async function getPoints(params: any) {
   return request<API.NoticeIconList>('/bo/api/v1/transaction/list', {

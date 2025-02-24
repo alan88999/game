@@ -31,7 +31,7 @@ export default [
         name: 'players',
         icon: 'table',
         path: '/list/players',
-        component: './AgentList',
+        component: './PlayerList',
       },
     ],
   },
@@ -75,7 +75,7 @@ export default [
   },
   {
     path: '/',
-    redirect: '/accounts/players',
+    redirect: '/list/players',
   },
   {
     path: '*',

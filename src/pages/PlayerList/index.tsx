@@ -1,13 +1,14 @@
-import { getPlayerList } from '@/services/ant-design-pro/api';
+import { getPlayerList, changeStatus } from '@/services/ant-design-pro/api';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
-import { FormattedMessage } from '@umijs/max';
-import { Button } from 'antd';
+import { FormattedMessage, useIntl } from '@umijs/max';
+import { Button, Modal, Switch } from 'antd';
 import React, { useRef, useState } from 'react';
 import dayjs from 'dayjs';
 import UpdateForm from './components/UpdateForm';
 import TransferForm from './components/transferFrom';
+import PasswordForm from './components/passwordForm';
 
 const TableList: React.FC = () => {
   const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
@@ -15,7 +16,8 @@ const TableList: React.FC = () => {
   const [currentRow, setCurrentRow] = useState<any>({});
   const [transferType, setTransferType] = useState(1);
   const [transferOpen, setTransferOpen] = useState(false);
-
+  const [passwordOpen, setPasswordOpen] = useState(false);
+  const intl = useIntl();
   const columns: ProColumns<API.RuleListItem>[] = [
     {
       title: <FormattedMessage id="pages.accounts.registerFrom" defaultMessage="Registered From" />,
@@ -85,16 +87,52 @@ const TableList: React.FC = () => {
       title: <FormattedMessage id="pages.accounts.status" defaultMessage="Status" />,
       dataIndex: 'status',
       search: false,
-      render: (dom) => {
+      render: (dom, item) => {
         return (
-          <div>
-            {
-              <FormattedMessage
-                id={`pages.accounts.status${dom ? 'Enabled' : 'Disabled'}Up`}
-                defaultMessage=""
-              />
+          <Switch
+            checked={dom === 1}
+            onChange={() => {
+              Modal.confirm({
+                title: (
+                  <>
+                    {intl.formatMessage({
+                      id: `pages.accounts.${dom === 1 ? 'disable' : 'enable'}Confirm`,
+                    })}
+                  </>
+                ),
+                content: (
+                  <>
+                    {intl.formatMessage({
+                      id: `pages.accounts.${dom === 1 ? 'disable' : 'enable'}ConfirmText`,
+                    })}
+
+                    <span
+                      style={{
+                        fontWeight: 'bold',
+                        color: '#1890ff',
+                      }}
+                    >
+                      {item.username}
+                    </span>
+                  </>
+                ),
+                onOk: async () => {
+                  changeStatus({
+                    status: dom === 1 ? 2 : 1,
+                    user_id: item.id,
+                  }).then(() => {
+                    actionRef.current?.reload();
+                  });
+                },
+              });
+            }}
+            checkedChildren={
+              <FormattedMessage id={'pages.accounts.statusEnabledUp'} defaultMessage="" />
             }
-          </div>
+            unCheckedChildren={
+              <FormattedMessage id={'pages.accounts.statusDisabledUp'} defaultMessage="" />
+            }
+          ></Switch>
         );
       },
     },
@@ -132,6 +170,15 @@ const TableList: React.FC = () => {
           }}
         >
           <FormattedMessage id="pages.accounts.status2" defaultMessage="编辑" />
+        </a>,
+        <a
+          key="password"
+          onClick={() => {
+            setPasswordOpen(true);
+            setCurrentRow(record);
+          }}
+        >
+          <FormattedMessage id="pages.accounts.status2" defaultMessage="密码" />
         </a>,
       ],
     },
@@ -201,6 +248,19 @@ const TableList: React.FC = () => {
           setCurrentRow({});
         }}
         open={transferOpen}
+        item={currentRow || {}}
+      />
+      <PasswordForm
+        onSuccess={async () => {
+          if (actionRef.current) {
+            actionRef.current.reload();
+          }
+        }}
+        onCancel={() => {
+          setPasswordOpen(false);
+          setCurrentRow({});
+        }}
+        open={passwordOpen}
         item={currentRow || {}}
       />
     </PageContainer>

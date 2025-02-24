@@ -1,6 +1,6 @@
 import { ModalForm, ProFormDigit, ProFormSelect } from '@ant-design/pro-components';
 import { transfer } from '@/services/ant-design-pro/api';
-import { FormattedMessage, useModel } from '@umijs/max';
+import { FormattedMessage } from '@umijs/max';
 import { Form, message } from 'antd';
 import React from 'react';
 import { createStyles } from 'antd-style';
@@ -74,8 +74,6 @@ const TransferForm: React.FC<TransferFormProps> = (props) => {
   const { open, onCancel, onSuccess, item, transferType } = props;
   const { styles } = useStyles();
   const [form] = Form.useForm<any>();
-  const { initialState } = useModel('@@initialState');
-  const { currentUser } = initialState || {};
   return (
     <ModalForm
       form={form}
@@ -119,8 +117,8 @@ const TransferForm: React.FC<TransferFormProps> = (props) => {
           <FormattedMessage id="pages.accounts.player" />
         </div>
         <div className={styles.nameContainer}>
-          {currentUser?.prefix ? <div className={styles.nameCode}>{currentUser?.prefix}</div> : ''}
-          <div className={styles.nameText}>{currentUser?.username}</div>
+          {item?.prefix ? <div className={styles.nameCode}>{item?.prefix}</div> : ''}
+          <div className={styles.nameText}>{item?.username}</div>
         </div>
         <div className={styles.dividerBorder} />
         <div className={styles.desc}>
