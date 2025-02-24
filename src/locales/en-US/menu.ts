@@ -49,4 +49,12 @@ export default {
   'menu.editor.flow': 'Flow Editor',
   'menu.editor.mind': 'Mind Editor',
   'menu.editor.koni': 'Koni Editor',
+  'menu.accounts': 'Accounts',
+  'menu.accounts.players': 'Players',
+  'menu.reports': 'Reports',
+  'menu.reports.agent': 'Agent',
+  'menu.reports.player': 'Player',
+  'menu.reports.game': 'Game',
+  'menu.reports.overview': 'Overview',
+  'menu.pointLogs': 'Point Logs',
 };

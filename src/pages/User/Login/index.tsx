@@ -1,13 +1,13 @@
-// import { Footer } from '@/components';
 import { login } from '@/services/ant-design-pro/api';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { LoginForm, ProFormCheckbox, ProFormText } from '@ant-design/pro-components';
+import { LoginForm, ProFormText } from '@ant-design/pro-components';
 import { FormattedMessage, Helmet, history, SelectLang, useIntl, useModel } from '@umijs/max';
-import { Alert, message, Tabs } from 'antd';
+import { message } from 'antd';
 import { createStyles } from 'antd-style';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
 import Settings from '../../../../config/defaultSettings';
+import classNames from 'classnames';
 
 const useStyles = createStyles(({ token }) => {
   return {
@@ -31,6 +31,29 @@ const useStyles = createStyles(({ token }) => {
         "url('https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/V-_oS6r-i7wAAAAAAAAAAAAAFl94AQBr')",
       backgroundSize: '100% 100%',
     },
+    currencyContainer: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: 24,
+    },
+    currencyItem: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '8px 20px',
+      borderRadius: '50px',
+      border: '1px solid #d4d4d4',
+      margin: '0 4px',
+    },
+    currencyImg: {
+      maxWidth: 20,
+      maxHeight: 20,
+      margin: '0 4px',
+    },
+    currencyItemActive: {
+      borderColor: '#1677ff',
+    },
   };
 });
 
@@ -44,25 +67,12 @@ const Lang = () => {
   );
 };
 
-const LoginMessage: React.FC<{
-  content: string;
-}> = ({ content }) => {
-  return (
-    <Alert
-      style={{
-        marginBottom: 24,
-      }}
-      message={content}
-      type="error"
-      showIcon
-    />
-  );
-};
-
 const Login: React.FC = () => {
   const { initialState, setInitialState } = useModel('@@initialState');
+  const { currencyList } = initialState as any;
   const { styles } = useStyles();
   const intl = useIntl();
+  const [currency, setCurrency] = useState<any>({});
 
   const fetchUserInfo = async () => {
     const userInfo = await initialState?.fetchUserInfo?.();
@@ -75,17 +85,16 @@ const Login: React.FC = () => {
       });
     }
   };
-
   const handleSubmit = async (values: API.LoginParams) => {
     try {
       // 登录
-      const res = await login({ ...values, currency_id: 1, source: 1 });
+      const res = await login({ ...values, currency_id: 1 || currency.id, source: 1 });
       if (res.code === 200) {
         const defaultLoginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
           defaultMessage: '登录成功！',
         });
-        localStorage.setItem('token', res.data);
+        localStorage.setItem('token', `Bearer ${res.data}`);
         message.success(defaultLoginSuccessMessage);
         await fetchUserInfo();
         const urlParams = new URL(window.location.href).searchParams;
@@ -101,6 +110,30 @@ const Login: React.FC = () => {
       });
       message.error(defaultLoginFailureMessage);
     }
+  };
+  const renderCurrency = () => {
+    return currencyList && currencyList.length ? (
+      <div className={styles.currencyContainer}>
+        {currencyList.map((item: any, index: number) => {
+          return (
+            <div
+              key={index}
+              className={classNames(styles.currencyItem, {
+                [`${styles.currencyItemActive}`]: currency.currency_code === item.currency_code,
+              })}
+              onClick={() => {
+                setCurrency(item);
+              }}
+            >
+              <img className={styles.currencyImg} />
+              {item.currency_code}
+            </div>
+          );
+        })}
+      </div>
+    ) : (
+      ''
+    );
   };
 
   return (
@@ -183,7 +216,7 @@ const Login: React.FC = () => {
 
           <div
             style={{
-              marginBottom: 24,
+              marginBottom: 64,
             }}
           >
             <a
@@ -194,9 +227,9 @@ const Login: React.FC = () => {
               <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码" />
             </a>
           </div>
+          {renderCurrency()}
         </LoginForm>
       </div>
-      {/* <Footer /> */}
     </div>
   );
 };

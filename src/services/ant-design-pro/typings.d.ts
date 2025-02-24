@@ -3,24 +3,19 @@
 
 declare namespace API {
   type CurrentUser = {
-    name?: string;
-    avatar?: string;
-    userid?: string;
-    email?: string;
-    signature?: string;
-    title?: string;
-    group?: string;
-    tags?: { key?: string; label?: string }[];
-    notifyCount?: number;
-    unreadCount?: number;
-    country?: string;
-    access?: string;
-    geographic?: {
-      province?: { label?: string; key?: string };
-      city?: { label?: string; key?: string };
-    };
-    address?: string;
-    phone?: string;
+    agent_balance: number;
+    currency_code: string;
+    currency_id: number;
+    game_balance: number;
+    id: number;
+    level: number;
+    master_count: number;
+    master_id: number;
+    status: number;
+    superior_count: number;
+    superior_id: number;
+    username: string;
+    prefix: string;
   };
 
   type LoginResult = {
@@ -29,6 +24,12 @@ declare namespace API {
     data: string;
     msg: string;
     currentAuthority?: string;
+  };
+
+  type ApiResult = {
+    code: number;
+    msg: string;
+    data: any;
   };
 
   type PageParams = {
@@ -52,10 +53,9 @@ declare namespace API {
   };
 
   type RuleList = {
+    code: number;
+    msg: string;
     data?: RuleListItem[];
-    /** 列表的内容总数 */
-    total?: number;
-    success?: boolean;
   };
 
   type FakeCaptcha = {

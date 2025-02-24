@@ -23,37 +23,59 @@ export default [
     ],
   },
   {
-    path: '/welcome',
-    name: 'welcome',
-    icon: 'smile',
-    component: './Welcome',
-  },
-  {
-    path: '/admin',
-    name: 'admin',
+    path: '/list',
+    name: 'accounts',
     icon: 'crown',
-    access: 'canAdmin',
     routes: [
       {
-        path: '/admin',
-        redirect: '/admin/sub-page',
-      },
-      {
-        path: '/admin/sub-page',
-        name: 'sub-page',
-        component: './Admin',
+        name: 'players',
+        icon: 'table',
+        path: '/list/players',
+        component: './AgentList',
       },
     ],
   },
   {
-    name: 'list.table-list',
-    icon: 'table',
-    path: '/list',
-    component: './TableList',
+    path: '/points',
+    name: 'pointLogs',
+    icon: 'dollar',
+    component: './Points',
+  },
+  {
+    path: '/report',
+    name: 'reports',
+    icon: 'solution',
+    routes: [
+      {
+        name: 'agent',
+        icon: 'table',
+        path: '/report/agent',
+        component: './ReportAgent',
+      },
+      {
+        name: 'player',
+        icon: 'table',
+        path: '/report/player',
+        component: './ReportPlayer',
+      },
+
+      {
+        name: 'game',
+        icon: 'table',
+        path: '/report/game',
+        component: './ReportGame',
+      },
+      {
+        name: 'overview',
+        icon: 'table',
+        path: '/report/overview',
+        component: './ReportOverview',
+      },
+    ],
   },
   {
     path: '/',
-    redirect: '/welcome',
+    redirect: '/accounts/players',
   },
   {
     path: '*',

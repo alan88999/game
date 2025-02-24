@@ -1,10 +1,9 @@
 import { AvatarDropdown, AvatarName, Footer, Question, SelectLang } from '@/components';
-import { currentUser as queryCurrentUser } from '@/services/ant-design-pro/api';
-import { LinkOutlined } from '@ant-design/icons';
+import { currentUser as queryCurrentUser, getCurrencyList } from '@/services/ant-design-pro/api';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';
 import type { RunTimeLayoutConfig } from '@umijs/max';
-import { history, Link } from '@umijs/max';
+import { history } from '@umijs/max';
 import React from 'react';
 import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestErrorConfig';
@@ -20,6 +19,8 @@ export async function getInitialState(): Promise<{
   currentUser?: API.CurrentUser;
   loading?: boolean;
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
+  fetchCurrencyList?: () => Promise<any | undefined>;
+  currencyList?: any;
 }> {
   const fetchUserInfo = async () => {
     try {
@@ -32,6 +33,17 @@ export async function getInitialState(): Promise<{
     }
     return undefined;
   };
+  // 请求币种列表
+  const fetchCurrencyList = async () => {
+    try {
+      const msg = await getCurrencyList({
+        skipErrorHandler: true,
+      });
+      return msg.data;
+    } catch (error) {}
+    return [];
+  };
+  const currencyList = await fetchCurrencyList();
   // 如果不是登录页面，执行
   const { location } = history;
   if (location.pathname !== loginPath) {
@@ -39,11 +51,14 @@ export async function getInitialState(): Promise<{
     return {
       fetchUserInfo,
       currentUser,
+      currencyList,
       settings: defaultSettings as Partial<LayoutSettings>,
     };
   }
   return {
+    fetchCurrencyList,
     fetchUserInfo,
+    currencyList,
     settings: defaultSettings as Partial<LayoutSettings>,
   };
 }
@@ -53,14 +68,14 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
   return {
     actionsRender: () => [<Question key="doc" />, <SelectLang key="SelectLang" />],
     avatarProps: {
-      src: initialState?.currentUser?.avatar,
+      src: '',
       title: <AvatarName />,
       render: (_, avatarChildren) => {
         return <AvatarDropdown>{avatarChildren}</AvatarDropdown>;
       },
     },
     waterMarkProps: {
-      content: initialState?.currentUser?.name,
+      content: initialState?.currentUser?.username,
     },
     footerRender: () => <Footer />,
     onPageChange: () => {
@@ -90,18 +105,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         width: '331px',
       },
     ],
-    links: isDev
-      ? [
-          <Link key="openapi" to="/umi/plugin/openapi" target="_blank">
-            <LinkOutlined />
-            <span>OpenAPI 文档</span>
-          </Link>,
-        ]
-      : [],
     menuHeaderRender: undefined,
-    // 自定义 403 页面
-    // unAccessible: <div>unAccessible</div>,
-    // 增加一个 loading 的状态
     childrenRender: (children) => {
       // if (initialState?.loading) return <PageLoading />;
       return (
