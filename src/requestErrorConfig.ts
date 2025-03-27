@@ -105,7 +105,12 @@ export const errorConfig: RequestConfig = {
     (response) => {
       // 拦截响应数据，进行个性化处理
       const { data } = response as unknown as ResponseStructure;
-      if (data?.code === 2004) {
+      if (
+        data?.code === 2003 ||
+        data?.code === 2004 ||
+        data?.code === 2005 ||
+        data?.code === 2006
+      ) {
         // 退出登录
         localStorage.removeItem('token');
         history.replace('/user/login');

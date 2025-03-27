@@ -55,6 +55,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
         } else {
           parmas = {
             ...parmas,
+            balance: parmas.balance * 1000,
             currency_id: currentUser?.currency_id,
           };
         }

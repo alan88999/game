@@ -90,11 +90,6 @@ const ReportAgent: React.FC = () => {
       search: false,
     },
     {
-      title: <FormattedMessage id="pages.accounts.upLineUsername" defaultMessage="" />,
-      dataIndex: 'upline_name',
-      search: false,
-    },
-    {
       title: <FormattedMessage id="pages.accounts.playerCount" defaultMessage="" />,
       dataIndex: 'bet_count',
       search: false,

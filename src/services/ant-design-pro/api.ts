@@ -13,12 +13,10 @@ export async function currentUser(options?: { [key: string]: any }) {
 }
 
 /** 退出登录接口 POST /bo/api/v1/user/logout */
-export async function outLogin(params: {
-  user_id: number
-}) {
+export async function outLogin(params: { user_id: number }) {
   return request<Record<string, any>>('/bo/api/v1/user/logout', {
     method: 'POST',
-    data: params
+    data: params,
   });
 }
 
@@ -59,7 +57,7 @@ export async function getPlayerList(params: {
   end_at?: number;
   status?: number;
 }) {
-  return request<API.RuleList>('/bo/api/v1/user/query/users', {
+  return request<any>('/bo/api/v1/user/query/users', {
     method: 'POST',
     data: params,
   });
@@ -110,14 +108,12 @@ export async function editPlayer(
 }
 
 /** 转账 POST /bo/api/v1/user/transfer */
-export async function transfer(
-  body: {
-    user_id?: number;
-    amount?: number;
-    transfer_type?: number;
-    type?: number;
-  },
-) {
+export async function transfer(body: {
+  user_id?: number;
+  amount?: number;
+  transfer_type?: number;
+  type?: number;
+}) {
   return request<API.RuleList>('/bo/api/v1/user/transfer', {
     method: 'POST',
     data: body,

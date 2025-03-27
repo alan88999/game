@@ -206,7 +206,7 @@ const PlayerList: React.FC = () => {
             <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
           </Button>,
         ]}
-        request={(val: any) => {
+        request={async (val: any) => {
           let params: any = {
             page: val.current - 1,
             size: val.pageSize,
@@ -217,8 +217,13 @@ const PlayerList: React.FC = () => {
           if (val.end_at) {
             params.end_at = dayjs(val.end_at).startOf('day').valueOf();
           }
-
-          return getPlayerList(params);
+          const res = await getPlayerList(params);
+          const { data } = res;
+          return {
+            data: data?.list,
+            total: data?.downline_count,
+            success: true,
+          };
         }}
         columns={columns}
       />
