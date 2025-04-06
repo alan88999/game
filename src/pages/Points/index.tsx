@@ -75,27 +75,6 @@ const Points: React.FC = () => {
       },
     },
     {
-      title: <FormattedMessage id="pages.accounts.receiver" defaultMessage="" />,
-      dataIndex: 'receiver_username',
-      search: false,
-    },
-    {
-      title: <FormattedMessage id="pages.accounts.receiverBefore" defaultMessage="" />,
-      dataIndex: 'receiver_before_amount',
-      search: false,
-      render: (dom) => {
-        return Number(dom) / 1000;
-      },
-    },
-    {
-      title: <FormattedMessage id="pages.accounts.receiverAfter" defaultMessage="" />,
-      dataIndex: 'receiver_after_amount',
-      search: false,
-      render: (dom) => {
-        return Number(dom) / 1000;
-      },
-    },
-    {
       title: <FormattedMessage id="pages.accounts.amount" defaultMessage="" />,
       dataIndex: 'amount',
       search: false,
@@ -129,7 +108,7 @@ const Points: React.FC = () => {
         search={{
           labelWidth: 120,
         }}
-        request={(val: any) => {
+        request={async (val: any) => {
           let params: any = {
             page: val.current - 1,
             size: val.pageSize,
@@ -141,10 +120,16 @@ const Points: React.FC = () => {
             params.start = dayjs(val.start).startOf('day').valueOf();
           }
           if (val.end) {
-            params.end = dayjs(val.end).startOf('day').valueOf();
+            params.end = dayjs(val.end).endOf('day').valueOf();
           }
+          const res = await getPoints(params);
+          const { data } = res;
 
-          return getPoints(params);
+          return {
+            data: data?.list,
+            total: data?.total,
+            success: true,
+          };
         }}
         columns={columns}
       />

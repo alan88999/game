@@ -198,7 +198,7 @@ const ReportOverview: React.FC = () => {
                 params.start = dayjs(val.start).startOf('day').valueOf();
               }
               if (val.end) {
-                params.end = dayjs(val.end).startOf('day').valueOf();
+                params.end = dayjs(val.end).endOf('day').valueOf();
               }
               const res = await getReportOverview(params);
               const { data } = res;

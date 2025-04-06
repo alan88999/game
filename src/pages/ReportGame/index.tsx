@@ -185,7 +185,7 @@ const ReportGame: React.FC = () => {
                 params.start_date = dayjs(val.start).startOf('day').format('YYYY-MM-DD');
               }
               if (val.end) {
-                params.end_date = dayjs(val.end).startOf('day').format('YYYY-MM-DD');
+                params.end_date = dayjs(val.end).endOf('day').format('YYYY-MM-DD');
               }
               const res = await getReportGame(params);
               const { data } = res;

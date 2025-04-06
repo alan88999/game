@@ -138,7 +138,7 @@ export async function changeStatus(body: { status: number; user_id: number }) {
 
 /** 获取points记录 POST /bo/api/v1/transaction/list */
 export async function getPoints(params: any) {
-  return request<API.NoticeIconList>('/bo/api/v1/transaction/list', {
+  return request<any>('/bo/api/v1/transaction/list', {
     method: 'POST',
     data: params,
   });

@@ -7,6 +7,7 @@ import { history } from '@umijs/max';
 import React from 'react';
 import defaultSettings from '../config/defaultSettings';
 import { errorConfig } from './requestErrorConfig';
+import Balance from './components/Balance';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -66,7 +67,7 @@ export async function getInitialState(): Promise<{
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
   return {
-    actionsRender: () => [<SelectLang key="SelectLang" />],
+    actionsRender: () => [<Balance />],
     avatarProps: {
       src: '',
       title: <AvatarName />,
@@ -106,7 +107,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     ],
     menuHeaderRender: undefined,
     childrenRender: (children) => {
-      // if (initialState?.loading) return <PageLoading />;
       return (
         <>
           {children}

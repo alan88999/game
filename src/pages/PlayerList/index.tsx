@@ -150,7 +150,7 @@ const PlayerList: React.FC = () => {
             setCurrentRow(record);
           }}
         >
-          <FormattedMessage id="pages.accounts.status1" defaultMessage="存款" />
+          <FormattedMessage id="pages.accounts.deposit" defaultMessage="Deposit" />
         </a>,
         <a
           key="subscribeAlert"
@@ -160,7 +160,7 @@ const PlayerList: React.FC = () => {
             setCurrentRow(record);
           }}
         >
-          <FormattedMessage id="pages.accounts.status2" defaultMessage="取款" />
+          <FormattedMessage id="pages.accounts.withdraw" defaultMessage="Withdraw" />
         </a>,
         <a
           key="edit"
@@ -169,7 +169,7 @@ const PlayerList: React.FC = () => {
             setCurrentRow(record);
           }}
         >
-          <FormattedMessage id="pages.accounts.status2" defaultMessage="编辑" />
+          <FormattedMessage id="pages.accounts.eit" defaultMessage="Edit" />
         </a>,
         <a
           key="password"
@@ -178,7 +178,7 @@ const PlayerList: React.FC = () => {
             setCurrentRow(record);
           }}
         >
-          <FormattedMessage id="pages.accounts.status2" defaultMessage="密码" />
+          <FormattedMessage id="pages.accounts.password" defaultMessage="Password" />
         </a>,
       ],
     },
